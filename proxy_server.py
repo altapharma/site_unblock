@@ -93,7 +93,12 @@ def proxy_thread(conn, client_addr):
 		while 1:
                         #receive data from webserver
 			data = s.recv(MAX_DATA_RECV)
-
+                        if data.count('HTTP/1.1') > 1: # it has a responce about dummy
+                                cnt1 = data.find('HTTP/1.1')
+                                data = data[cnt1+8:]
+                                cnt2 = data.find('HTTP/1.1')
+                                data = data[cnt2:]
+                                
 			if(len(data) > 0):
                                 #send to client(browser)
 				conn.send(data)
